@@ -122,7 +122,7 @@ def main():
   st.write('Body Mass Index(BMI) estimates the total body fat and assesses the risks for diseases related to increase body fat. A higher BMI may indicate higher risk of developing many diseases.')
   st.write('*Since we only have the access to your face feature, the estimated value is biased')
   
-  st.text('Try this live BMI predictor😄')
+  st.subheader('Try this live BMI predictor😄')
   webrtc_streamer(key="example",video_transformer_factory=VideoProcessor,rtc_configuration={'iceServers': get_ice_servers()},sendback_audio=False)
   
   col2, col3 = st.columns([2,1])
@@ -139,7 +139,7 @@ def main():
         process_bar2.progress(process+1)
       col2.success('Taken the photo sucessfully!')
       file_image = np.array(Image.open(file_image))
-      pred_camera = predict_bmi(file_image)
+      pred_camera = predict_bmi(file_image)[0]
       if len(pred_camera) == 0:
         col2.markdown('No face detected, please take a photo again.')
       ready_cam = Image.fromarray(file_image)
@@ -160,7 +160,7 @@ def main():
         process_bar3.progress(process+1)
       col3.success('Uploaded the photo sucessfully!')
       upload_img = np.array(Image.open(upload_img).convert('RGB'))
-      pred_upload = predict_bmi(upload_img)
+      pred_upload = predict_bmi(upload_img)[0]
       if len(pred_upload) == 0:
         col2.markdown('No face detected, please upload a photo again.')
       ready_upload = Image.fromarray(upload_img)
