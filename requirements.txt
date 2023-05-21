@@ -1,0 +1,15 @@
+streamlit
+opencv-python-headless
+numpy
+Pillow
+Keras
+keras_applications
+keras_vggface
+tensorflow_probability
+tensorflow
+pandas
+av
+joblib
+streamlit-webrtc
+scikit-learn
+twilio
