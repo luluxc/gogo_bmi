@@ -90,7 +90,7 @@ def prepare_download(img):
     image_bytes = buf.getvalue()
     return image_bytes
 
-
+@st.cache_data
 def decodeImage(bytesIo):
     fmt = whatimage.identify_image(bytesIo)
     if fmt in ['heic', 'avif']:
@@ -98,7 +98,7 @@ def decodeImage(bytesIo):
       # Convert to other file format like jpeg
       pi = Image.frombytes(mode=i.mode, size=i.size, data=i.data)
       pi.save('new.jpg', format="jpeg")
-      return pi
+      return 'new.jpg'
  
 class VideoProcessor:
     def __init__(self):
@@ -171,9 +171,10 @@ def main():
         time.sleep(0.01)
         process_bar3.progress(process+1)
       col3.success('Uploaded the photo sucessfully!')
-      upload_img = decodeImage(upload_img.getvalue())
-      if not upload_img:
-        upload_img = Image.open(upload_img)
+      new_img = decodeImage(upload_img.getvalue())
+      if new_img:
+         upload_img = Image.open(new_img)
+      upload_img = Image.open(upload_img)
       upload_img = np.array(upload_img.convert('RGB'))
       pred_upload = predict_bmi(upload_img)[0]
       if len(pred_upload) == 0:
