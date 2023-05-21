@@ -170,7 +170,7 @@ def main():
         time.sleep(0.01)
         process_bar3.progress(process+1)
       col3.success('Uploaded the photo sucessfully!')
-      upload_img = decodeImage(upload_img)
+      upload_img = decodeImage(upload_img.getvalue())
       upload_img = Image.open(upload_img)
       upload_img = np.array(upload_img.convert('RGB'))
       pred_upload = predict_bmi(upload_img)[0]
