@@ -13,3 +13,5 @@ joblib
 streamlit-webrtc
 scikit-learn
 twilio
+whatimage
+pyheif
