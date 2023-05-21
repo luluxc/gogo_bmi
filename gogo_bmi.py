@@ -24,6 +24,8 @@ import os
 from turn import get_ice_servers
 import threading
 from typing import Union
+import whatimage
+import pyheif
 
 
 #def pearson_corr(y_test, y_pred):
@@ -84,10 +86,19 @@ def predict_bmi(frame):
  
 def prepare_download(img):
     buf = io.BytesIO()
-    img.save(buf, format='PNG')
+    img.save(buf, format='JPEG')
     image_bytes = buf.getvalue()
     return image_bytes
 
+@st.cache_data
+def decodeImage(bytesIo):
+    fmt = whatimage.identify_image(bytesIo)
+    if fmt in ['heic', 'avif']:
+         i = pyheif.read_heif(bytesIo)
+         # Convert to other file format like jpeg
+         pi = Image.frombytes(mode=i.mode, size=i.size, data=i.data)
+         return pi
+ 
 class VideoProcessor:
     def __init__(self):
         self.frame_lock = threading.Lock()
@@ -159,7 +170,9 @@ def main():
         time.sleep(0.01)
         process_bar3.progress(process+1)
       col3.success('Uploaded the photo sucessfully!')
-      upload_img = np.array(Image.open(upload_img).convert('RGB'))
+      upload_img = Image.open(upload_img)
+      upload_img = decodeImage(upload_img)
+      upload_img = np.array(upload_img.convert('RGB'))
       pred_upload = predict_bmi(upload_img)[0]
       if len(pred_upload) == 0:
         col2.warning('No face detected, please upload a photo again.')
