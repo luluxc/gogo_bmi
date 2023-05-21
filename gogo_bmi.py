@@ -94,10 +94,11 @@ def prepare_download(img):
 def decodeImage(bytesIo):
     fmt = whatimage.identify_image(bytesIo)
     if fmt in ['heic', 'avif']:
-         i = pyheif.read_heif(bytesIo)
-         # Convert to other file format like jpeg
-         pi = Image.frombytes(mode=i.mode, size=i.size, data=i.data)
-         return pi
+      i = pyheif.read_heif(bytesIo)
+      # Convert to other file format like jpeg
+      pi = Image.frombytes(mode=i.mode, size=i.size, data=i.data)
+      pi.save('new.jpg', format="jpeg")
+      return pi
  
 class VideoProcessor:
     def __init__(self):
