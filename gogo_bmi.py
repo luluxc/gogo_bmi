@@ -90,9 +90,9 @@ def prepare_download(img):
     image_bytes = buf.getvalue()
     return image_bytes
 
-def allowed_file(filename):
-    ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+# def allowed_file(filename):
+#     ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
+#     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 # @st.cache_data
 # def decodeImage(bytesIo):
 #     fmt = whatimage.identify_image(bytesIo)
@@ -173,28 +173,26 @@ def main():
       for process in range(100):
         time.sleep(0.01)
         process_bar3.progress(process+1)
-      if allowed_file(upload_img.filename):
-        col3.success('Uploaded the photo sucessfully!')
+      col3.success('Uploaded the photo sucessfully!')
 #       new_img = decodeImage(upload_img.getvalue())
 #       if new_img:
 #          upload_img = Image.open(new_img)
-        upload_img = Image.open(upload_img)
-        upload_img = np.array(upload_img.convert('RGB'))
-        pred_upload = predict_bmi(upload_img)[0]
-        if len(pred_upload) == 0:
-          col2.warning('No face detected, please upload a photo again.')
-        ready_upload = Image.fromarray(upload_img)
-        col2.image(ready_upload, clamp=True)
-        # Convert the PIL Image to bytes
-        download_img = prepare_download(ready_upload)
-        col3.write('Download the predicted image if you want!')
-        download_img = col3.download_button(
-          label='Download image', 
-          data=download_img,
-          file_name='BMI_image_uploaded.png',
-          mime="image/png")
-      else:
-        col2.warning('Please upload an image in {jpg,jepg,png} type.')
+      upload_img = Image.open(upload_img)
+      upload_img = np.array(upload_img.convert('RGB'))
+      pred_upload = predict_bmi(upload_img)[0]
+      if len(pred_upload) == 0:
+        col2.warning('No face detected, please upload a photo again.')
+      ready_upload = Image.fromarray(upload_img)
+      col2.image(ready_upload, clamp=True)
+      # Convert the PIL Image to bytes
+      download_img = prepare_download(ready_upload)
+      col3.write('Download the predicted image if you want!')
+      download_img = col3.download_button(
+        label='Download image', 
+        data=download_img,
+        file_name='BMI_image_uploaded.png',
+        mime="image/png")
+
   
   expander_col2 = col2.expander('What are the health consequences of having a high or low BMI?')
   expander_col2.write('Obesity carries significant health hazards, whereas maintaining a healthy weight is a preventative measure against illnesses and cardiovascular difficulties. People with a BMI of more than 30 are more likely to have problems such as:')
