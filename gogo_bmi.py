@@ -86,7 +86,7 @@ def predict_bmi(frame):
  
 def prepare_download(img):
     buf = io.BytesIO()
-    img.save(buf, format='JPEG')
+    img.save(buf, format='PNG')
     image_bytes = buf.getvalue()
     return image_bytes
 
