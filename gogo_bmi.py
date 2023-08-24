@@ -1,5 +1,5 @@
 # filename = '/home/appuser/venv/lib/python3.9/site-packages/keras_vggface/models.py'
-filename = 'usr/local/lib/python3.9/dist-packages/keras_vggface/models.py
+filename = 'usr/local/lib/python3.9/dist-packages/keras_vggface/models.py'
 text = open(filename).read()
 open(filename, 'w+').write(text.replace('keras.engine.topology', 'tensorflow.keras.utils'))
 
